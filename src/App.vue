@@ -1,30 +1,35 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view />
+  <div class="wrap">
+    <div class="header"></div>
+    <div class="center"></div>
+    <div class="footer"><Footer /></div>
+  </div>
 </template>
-
+<script setup>
+import Footer from "./views/footer";
+</script>
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-
-nav {
-  padding: 30px;
+.wrap {
+  width: 100vw;
+  height: 100vh;
+  background-image: url("./assets/fe8c48e89835faab414bb2479c185703.jpeg");
+  background-size: contain;
+  display: flex;
+  flex-direction: column;
 }
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
+.header,
+.footer {
+  height: 10vh;
+  width: 100%;
 }
-
-nav a.router-link-exact-active {
-  color: #42b983;
+.center {
+  flex-grow: 1;
+  border: 1px solid red;
+  width: 100%;
 }
 </style>
