@@ -9,19 +9,26 @@
       <Progress
         title="等级"
         color="#dfd65b"
-        :numData="{ cur: 324, max: 1000 }"
+        :numData="baseDate.state.baseData.blood"
       />
-      <Progress title="生命" color="#f44336" :numData="{ cur: 1, max: 1000 }" />
+      <Progress title="生命" color="#f44336" :numData="blood" />
       <Progress
         title="法力"
         color="#429fdd"
-        :numData="{ cur: 1000, max: 1000 }"
+        :numData="baseDate.state.baseData.magic"
       />
     </div>
   </div>
 </template>
 <script setup>
 import Progress from "../../components/progress.vue";
+import { useStore } from "vuex";
+import { computed } from "@vue/reactivity";
+const baseDate = useStore();
+const blood = computed(() => {
+  return baseDate.state.baseData.blood;
+});
+console.log(blood);
 </script>
 <style>
 .header-wrap {
