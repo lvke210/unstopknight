@@ -1,12 +1,13 @@
 <template>
   <div class="wrap">
-    <div class="header"></div>
+    <div class="header"><Header /></div>
     <div class="center"></div>
     <div class="footer"><Footer /></div>
   </div>
 </template>
 <script setup>
 import Footer from "./views/footer";
+import Header from "./views/header";
 </script>
 <style>
 * {
