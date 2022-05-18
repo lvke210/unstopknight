@@ -1,23 +1,27 @@
 <template>
-  <div style="color: #fff">
-    <div><button @click="hangdleClick">button</button></div>
-    {{ store.state.baseData.blood.cur }}
-    {{ store.state.count }}
-  </div>
+  <div class="enemy">enemy</div>
+  <div class="hero"><Progress title="生命" color="red" /></div>
 </template>
 <script setup>
-import { useStore } from "vuex";
-const store = useStore();
-const blood = store.state.baseData.blood;
-const newBlood = {
-  cur: blood.cur,
-  max: blood.max,
-};
-function hangdleClick() {
-  store.dispatch("add");
-  console.log("click");
-  newBlood.cur += 100;
-  console.log(newBlood);
-  store.dispatch("changeBaseData", newBlood);
-}
+import { onBeforeUnmount } from "vue";
+import { recovery } from "../../utils";
+import Progress from "@/components/progress.vue";
+let timer;
+// 自动恢复
+timer = recovery();
+
+onBeforeUnmount(() => {
+  clearInterval(timer);
+});
 </script>
+
+<style scoped>
+.enemy,
+.hero {
+  width: 50%;
+  height: 50vw;
+  border: 1px solid red;
+  border-radius: 50%;
+  text-align: center;
+}
+</style>

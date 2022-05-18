@@ -31,7 +31,11 @@ import Center from "./views/center";
 }
 .center {
   flex-grow: 1;
-  border: 1px solid red;
   width: 100%;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
 }
 </style>

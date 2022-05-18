@@ -2,30 +2,27 @@ import { createStore } from "vuex";
 
 export default createStore({
   state: {
-    baseData: {
-      level: { cur: 0, max: 1000 },
-      blood: { cur: 200, max: 1000 },
-      magic: { cur: 100, max: 1000 },
-    },
-    count: 0,
+    levelCur: 1, //等级
+    levelMax: 1000,
+    bloodCur: 200, //血量
+    bloodMax: 1000,
+    magicCur: 300, //蓝量
+    magicMax: 1000,
+    userName: "小小勇者", //角色名
+    secondName: "冒险家", //称号
+    attack: 100,
+    defence: 100,
   },
   getters: {},
   mutations: {
-    CHANGEBASEDATA: (state, data) => {
-      console.log("mutations");
-      state.baseData.blood = data;
-    },
-    ADD(state) {
-      state.count = state.count + 1;
+    CHANGEDATA: (state, data) => {
+      const { type, value } = data;
+      state[type] = value;
     },
   },
   actions: {
-    changeBaseData: ({ commit }, data) => {
-      console.log("actions");
-      commit("CHANGEBASEDATA", data);
-    },
-    add({ commit }) {
-      commit("ADD");
+    change: ({ commit }, data) => {
+      commit("CHANGEDATA", data);
     },
   },
   modules: {},
