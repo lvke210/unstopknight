@@ -11,11 +11,33 @@
       <Progress title="法力" color="#429fdd" />
     </div>
   </div>
+  <div class="exp-progress" :style="{ '--width': expWidth }"></div>
 </template>
 <script setup>
+import { computed } from "@vue/reactivity";
 import Progress from "../../components/progress.vue";
+import { useStore } from "vuex";
+const store = useStore();
+const expWidth = computed(() => {
+  return `${(store.state.exp / store.state.upgradeExp) * 100}%`;
+});
 </script>
 <style>
+.exp-progress {
+  width: 100vw;
+  height: 0.2rem;
+  background-color: rgba(255, 255, 255, 0.219);
+  position: relative;
+}
+.exp-progress::after {
+  content: "";
+  left: 0;
+  top: 0;
+  display: block;
+  width: var(--width);
+  height: 0.2rem;
+  background-color: rgb(0, 233, 105);
+}
 .header-wrap {
   color: #fff;
   height: 100%;

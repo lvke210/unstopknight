@@ -25,6 +25,11 @@ const data = computed(() => {
         cur: store.state.bloodCur,
         max: store.state.bloodMax,
       };
+    case "敌方":
+      return {
+        cur: store.state.enemy.bloodCur,
+        max: store.state.enemy.bloodMax,
+      };
     default:
       return {
         cur: store.state.magicCur,
