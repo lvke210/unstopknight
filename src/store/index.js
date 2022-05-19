@@ -1,5 +1,6 @@
 import { createStore } from "vuex";
 import enemyState from "./enemy";
+import systemState from "./system";
 export default createStore({
   state: {
     levelCur: 1, //等级
@@ -10,10 +11,10 @@ export default createStore({
     bloodMax: 1000,
     magicCur: 300, //蓝量
     magicMax: 1000,
-    speed: 1, //攻速
+    speed: 0.5, //攻速
     attack: 100, //攻击
-    defence: 98, //防御
-    sucking: 1, //吸血
+    defence: 10, //防御
+    sucking: 10, //吸血
     userName: "小小勇者", //角色名
     secondName: "冒险家", //称号
     stage: 1, // 关卡
@@ -35,5 +36,6 @@ export default createStore({
   },
   modules: {
     enemy: enemyState,
+    system: systemState,
   },
 });

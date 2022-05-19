@@ -1,44 +1,22 @@
 <template>
-  <div class="enemy"><Progress title="敌方" color="red" /></div>
+  <div class="enemy" @click="touchEnemyAttack"><Progress title="敌方" color="red" /></div>
   <div class="hero"><Progress title="生命" color="red" /></div>
-  <Modal :change="closeModal" :visible="visible" content="你被怪物送到了一个地方" />
+  <Modal :cancel="closeModal" :visible="visible">你被怪物送到了一个地方</Modal>
 </template>
 <script setup>
-import { onBeforeUnmount, watchEffect, ref } from "vue";
-import { recovery, heroAttack, enemyAttack } from "../../utils";
+import { onBeforeUnmount, computed } from "vue";
 import Progress from "@/components/progress.vue";
 import Modal from "@/components/modal.vue";
 import { useStore } from "vuex";
-import { computed } from "@vue/reactivity";
-const store = useStore();
-const visible = ref(false);
+import { start, clear } from "../../utils";
+import { heroAttack } from "../../utils/game";
 
-const isHeroDead = computed(() => {
-  return store.state.isHeroDead;
+const store = useStore();
+const visible = computed(() => {
+  return store.state.system.deadVisible;
 });
-let recoveryTimer, heroAttackTimer, enemyAttackTimer;
 onBeforeUnmount(() => {
   clear();
-});
-// 清除所有定时器
-function clear() {
-  clearInterval(recoveryTimer);
-  clearInterval(heroAttackTimer);
-  clearInterval(enemyAttackTimer);
-}
-
-function start() {
-  recoveryTimer = recovery();
-  heroAttackTimer = heroAttack();
-  enemyAttackTimer = enemyAttack();
-}
-start();
-
-watchEffect(() => {
-  if (isHeroDead.value) {
-    clear();
-    visible.value = true;
-  }
 });
 
 function closeModal() {
@@ -46,8 +24,16 @@ function closeModal() {
     bloodCur: store.state.bloodMax,
     isHeroDead: false,
   });
+  store.dispatch("enemyChange", {
+    bloodCur: store.state.enemy.bloodMax,
+  });
+  store.dispatch("systemChange", {
+    deadVisible: false,
+  });
   start();
-  visible.value = false;
+}
+function touchEnemyAttack() {
+  heroAttack();
 }
 </script>
 

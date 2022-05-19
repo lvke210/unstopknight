@@ -4,7 +4,7 @@ export default {
     levelMax: 1000,
     bloodCur: 1000, //血量
     bloodMax: 1000,
-    attack: 300,
+    attack: 100,
     defence: 10,
   },
   mutations: {

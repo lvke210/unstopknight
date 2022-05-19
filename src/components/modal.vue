@@ -5,7 +5,7 @@
   >
     <div class="modal-wrap">
       <div class="modal-title">{{ title }}</div>
-      <div class="modal-content">{{ content }}</div>
+      <div class="modal-content"><slot /></div>
       <div class="modal-footer" @click="hangdleClick">确定</div>
     </div>
   </div>
@@ -20,21 +20,17 @@ const props = defineProps({
   title: {
     default: "提示",
   },
-  content: {
-    default: "...",
-  },
   visible: {
     required: true,
     type: Boolean,
   },
-  change: {
+  cancel: {
     type: Function,
     required: true,
   },
 });
-
 function hangdleClick() {
-  props.change();
+  props.cancel();
 }
 </script>
 <style scoped>
@@ -54,8 +50,8 @@ function hangdleClick() {
   flex-direction: column;
   align-items: center;
   color: rgba(0, 0, 0, 0.856);
-
   font-size: 0.9rem;
+  height: max-content;
 }
 .modal div {
 }
@@ -64,8 +60,8 @@ function hangdleClick() {
 }
 .modal-content {
   text-align: center;
-  height: 5rem;
-  line-height: 5rem;
+  min-height: 5rem;
+  padding: 1rem 0;
 }
 .modal-footer {
   text-align: right;

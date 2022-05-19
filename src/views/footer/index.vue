@@ -1,13 +1,32 @@
 <template>
-  <div class="footer-wrap">
-    <div class="footer-item">角色</div>
-    <div class="footer-item">伙伴</div>
-    <div class="footer-item">关卡</div>
-    <div class="footer-item">背包</div>
-    <div class="footer-item">商城</div>
+  <div class="footer-wrap" @click="showModal">
+    <div class="footer-item" v-for="item in pageData" :key="item">
+      {{ item }}
+    </div>
   </div>
+  <Modal :visible="heroVisible" title="角色" :cancel="closeModal"> <Hero /> </Modal>
 </template>
-<script setup></script>
+<script setup>
+import { ref } from "vue";
+import Modal from "../../components/modal.vue";
+import Hero from "./hero.vue";
+let heroVisible = ref(false);
+const pageData = ["角色", "伙伴", "关卡", "背包", "商城"];
+
+function showModal(e) {
+  const type = e.target.innerText;
+  switch (type) {
+    case "角色":
+      heroVisible.value = true;
+      break;
+    default:
+      null;
+  }
+}
+function closeModal() {
+  heroVisible.value = false;
+}
+</script>
 <style scoped>
 .footer-wrap {
   display: flex;
