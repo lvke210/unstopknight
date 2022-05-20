@@ -6,6 +6,7 @@
     <div>攻速:{{ store.state.speed }}</div>
     <div>吸血:{{ store.state.sucking }}</div>
     <div>防御:{{ store.state.defence }}</div>
+    <div>升级经验：{{ store.state.exp }}/{{ store.state.upgradeExp }}</div>
   </div>
 </template>
 <script setup>

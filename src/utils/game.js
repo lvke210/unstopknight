@@ -6,11 +6,11 @@ function getHeroAttackResult(type) {
   if (type) {
     return store.state.attack > store.state.enemy.defence
       ? store.state.attack - store.state.enemy.defence
-      : 1;
+      : 0;
   } else {
     return store.state.enemy.attack > store.state.defence
       ? store.state.enemy.attack - store.state.defence
-      : 1;
+      : 0;
   }
 }
 
@@ -41,11 +41,15 @@ export function heroAttack() {
       bloodCur: value,
     });
     //英雄吸血
+
     const nextBlood =
       store.state.bloodCur + Math.round((store.state.attack * store.state.sucking) / 100);
-    store.dispatch("change", {
-      bloodCur: nextBlood >= store.state.bloodMax ? store.state.bloodMax : nextBlood,
-    });
+
+    store.state.bloodCur < store.state.bloodMax
+      ? store.dispatch("change", {
+          bloodCur: nextBlood >= store.state.bloodMax ? store.state.bloodMax : nextBlood,
+        })
+      : null;
   } else {
     //怪物刷新
     store.dispatch("enemyChange", {

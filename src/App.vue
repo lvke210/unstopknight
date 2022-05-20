@@ -37,5 +37,6 @@ import Center from "./views/center";
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
+  position: relative;
 }
 </style>
