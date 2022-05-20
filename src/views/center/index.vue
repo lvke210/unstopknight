@@ -4,6 +4,7 @@
   <!-- <button @click="handleClick">button</button> -->
   <!-- <button @click="handleClick2">button33</button> -->
   <canvas ref="canvas" class="canvas" width="300" height="600"></canvas>
+  <div class="hero-skill"><button @click="upgrade">升级</button></div>
   <Modal :cancel="closeModal" :visible="visible">你被怪物送到了一个地方</Modal>
 </template>
 <script setup>
@@ -12,7 +13,7 @@ import Progress from "@/components/progress.vue";
 import Modal from "@/components/modal.vue";
 import { useStore } from "vuex";
 import { start, clear } from "../../utils";
-import { heroAttack } from "../../utils/game";
+import { heroAttack, heroUpgrade } from "../../utils/game";
 
 const store = useStore();
 const canvas = ref(null);
@@ -74,6 +75,11 @@ function closeModal() {
 function touchEnemyAttack() {
   heroAttack();
 }
+
+function upgrade() {
+  console.log("升级");
+  heroUpgrade();
+}
 </script>
 
 <style scoped>
@@ -92,5 +98,12 @@ function touchEnemyAttack() {
 }
 button {
   z-index: 999;
+}
+.hero-skill {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  border: 1px solid red;
 }
 </style>

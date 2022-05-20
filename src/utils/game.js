@@ -1,7 +1,9 @@
 import { clear } from "./index";
 import store from "../store";
 
-//伤害计算 英雄对怪物
+/**
+ * 伤害计算 英雄对怪物
+ */
 function getHeroAttackResult(type) {
   if (type) {
     return store.state.attack > store.state.enemy.defence
@@ -14,7 +16,9 @@ function getHeroAttackResult(type) {
   }
 }
 
-// 回复
+/**
+ *  回复
+ */
 export function recovery() {
   return setInterval(() => {
     store.dispatch("change", {
@@ -23,7 +27,9 @@ export function recovery() {
     });
   }, 1000);
 }
-//英雄攻击
+/**
+ * 英雄攻击
+ */
 export function heroAttackInterval() {
   return setInterval(() => {
     heroAttack();
@@ -61,16 +67,7 @@ export function heroAttack() {
     const isUpgradeEnble =
       store.state.exp + store.state.enemy.levelCur * 10 >= store.state.upgradeExp;
     if (isUpgradeEnble) {
-      store.dispatch("change", {
-        levelCur: store.state.levelCur + 1,
-        upgradeExp: store.state.upgradeExp + store.state.levelCur * 10,
-        exp: 0,
-        attack: store.state.attack + 10,
-        defence: store.state.defence + 10,
-        bloodMax: store.state.bloodMax + 10,
-        bloodCur: store.state.bloodMax,
-        magicCur: store.state.magicMax,
-      });
+      heroUpgrade();
     } else {
       store.dispatch("change", {
         exp: store.state.exp + store.state.enemy.levelCur * 10,
@@ -78,8 +75,25 @@ export function heroAttack() {
     }
   }
 }
-// 怪物攻击
+/**
+ * 英雄升级
+ */
+export function heroUpgrade() {
+  store.dispatch("change", {
+    levelCur: store.state.levelCur + 1,
+    upgradeExp: 100 + Math.pow(store.state.levelCur, 2),
+    exp: 0,
+    attack: store.state.attack + 10,
+    defence: store.state.defence + 10,
+    bloodMax: store.state.bloodMax + 10,
+    bloodCur: store.state.bloodMax,
+    magicCur: store.state.magicMax,
+  });
+}
 
+/**
+ * 怪物攻击
+ */
 export function enemyAttackInterval() {
   return setInterval(() => {
     enemyAttack();
@@ -103,3 +117,5 @@ export function enemyAttack() {
     });
   }
 }
+
+//英雄技能
