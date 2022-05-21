@@ -39,4 +39,10 @@ import Center from "./views/center";
   align-items: center;
   position: relative;
 }
+.btn {
+  text-align: right;
+  background-color: rgb(116, 189, 238);
+  padding: 5px 8px;
+  border-radius: 5px;
+}
 </style>

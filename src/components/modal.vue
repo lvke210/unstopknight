@@ -6,7 +6,7 @@
     <div class="modal-wrap">
       <div class="modal-title">{{ title }}</div>
       <div class="modal-content"><slot /></div>
-      <div class="modal-footer" @click="hangdleClick">确定</div>
+      <div class="modal-footer btn" @click="hangdleClick">确定</div>
     </div>
   </div>
 </template>
@@ -62,11 +62,5 @@ function hangdleClick() {
   text-align: center;
   min-height: 5rem;
   padding: 1rem 0;
-}
-.modal-footer {
-  text-align: right;
-  background-color: rgb(116, 189, 238);
-  padding: 5px 8px;
-  border-radius: 5px;
 }
 </style>

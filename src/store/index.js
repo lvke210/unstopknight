@@ -17,7 +17,7 @@ export default createStore({
     sucking: 10, //吸血
     userName: "小小勇者", //角色名
     secondName: "冒险家", //称号
-    stage: 1, // 关卡
+
     isHeroDead: false,
   },
   getters: {},
