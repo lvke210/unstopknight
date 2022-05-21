@@ -1,5 +1,11 @@
 import { clear } from "./index";
 import store from "../store";
+import { computed } from "vue";
+
+// 战斗状态
+export const attackStatus = computed(() => {
+  return store.state.system.attackStatus;
+});
 
 /**
  * 伤害计算 英雄对怪物
@@ -34,38 +40,39 @@ export function recovery() {
 export function heroAttackInterval() {
   updateEnemy();
   return setInterval(() => {
-    heroAttack();
+    attackStatus.value === 1 ? heroAttack() : null;
   }, store.state.speed * 1000);
 }
 export function heroAttack() {
-  const isAlive = store.state.enemy.bloodCur > 0; //怪物是否死亡
-  if (isAlive) {
-    //敌方扣血
-    const bloodCur =
-      store.state.enemy.bloodCur - getHeroAttackResult(1) < 0
-        ? 0
-        : store.state.enemy.bloodCur - getHeroAttackResult(1);
-    store.dispatch("enemyChange", {
-      bloodCur,
-    });
-    //英雄吸血
-    const nextBlood =
-      store.state.bloodCur + Math.round((store.state.attack * store.state.sucking) / 100);
+  //敌方扣血
+  const bloodCur =
+    store.state.enemy.bloodCur - getHeroAttackResult(1) < 0
+      ? 0
+      : store.state.enemy.bloodCur - getHeroAttackResult(1);
+  store.dispatch("enemyChange", {
+    bloodCur,
+  });
+  //英雄吸血
+  const nextBlood =
+    store.state.bloodCur + Math.round((store.state.attack * store.state.sucking) / 100);
 
-    store.state.bloodCur < store.state.bloodMax
-      ? store.dispatch("change", {
-          bloodCur: nextBlood >= store.state.bloodMax ? store.state.bloodMax : nextBlood,
-        })
-      : null;
-  } else {
+  store.state.bloodCur < store.state.bloodMax
+    ? store.dispatch("change", {
+        bloodCur: nextBlood >= store.state.bloodMax ? store.state.bloodMax : nextBlood,
+      })
+    : null;
+  // bloodCur为0代表怪物死亡,立即执行死亡之后的操作,
+  if (!bloodCur) {
     //停止战斗
     clear();
     attackStatusUpdate(2);
-    //怪物刷新
-    // store.dispatch("enemyChange", {
-    //   bloodCur: store.state.enemy.bloodMax,
-    //   bloodMax: store.state.enemy.bloodMax + store.state.system.stage * 10,
-    // });
+
+    // 更新关卡信息
+    const isStageUpgrade = store.state.system.stageCur === 0;
+    store.dispatch("systemChange", {
+      stageCur: isStageUpgrade ? store.state.system.stageMax : store.state.system.stageCur - 1,
+      stage: isStageUpgrade ? store.state.system.stage + 1 : store.state.system.stage,
+    });
 
     // 怪物死亡 英雄升级或者累积经验
     const isUpgradeEnble =
@@ -77,6 +84,8 @@ export function heroAttack() {
         exp: store.state.exp + store.state.enemy.levelCur * 10,
       });
     }
+    //save
+    setlocalStorage();
   }
 }
 /**
@@ -100,7 +109,7 @@ export function heroUpgrade() {
  */
 export function enemyAttackInterval() {
   return setInterval(() => {
-    enemyAttack();
+    attackStatus.value === 1 ? enemyAttack() : null;
   }, 1000);
 }
 export function enemyAttack() {
@@ -128,6 +137,14 @@ export function enemyAttack() {
 export function updateEnemy() {
   store.dispatch("enemyChange", {
     bloodCur: store.state.enemy.bloodMax,
+  });
+}
+/**
+ * 怪物刷新数据
+ */
+export function enemyUpgrade() {
+  store.dispatch("enemyChange", {
+    bloodCur: store.state.enemy.bloodMax,
     bloodMax: store.state.enemy.bloodMax + store.state.system.stage * 10,
   });
 }
@@ -138,4 +155,13 @@ export function updateEnemy() {
  */
 export function attackStatusUpdate(value) {
   store.dispatch("systemChange", { attackStatus: value });
+}
+
+/**
+ *  本读存储
+ */
+function setlocalStorage() {
+  const { state } = store;
+  localStorage.setItem("state", JSON.stringify(state));
+  console.log(state);
 }

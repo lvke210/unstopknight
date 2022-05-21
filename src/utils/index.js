@@ -1,4 +1,5 @@
-import { heroAttackInterval, enemyAttackInterval } from "./game";
+import { watchEffect } from "vue";
+import { heroAttackInterval, enemyAttackInterval, attackStatus } from "./game";
 let recoveryTimer, heroAttackTimer, enemyAttackTimer;
 /**
  * 开始执行怪物攻击喝英雄攻击的定时器
@@ -8,7 +9,6 @@ export function start() {
   heroAttackTimer = heroAttackInterval();
   enemyAttackTimer = enemyAttackInterval();
 }
-start();
 
 /**
  * 清除所有定时器
@@ -18,3 +18,7 @@ export function clear() {
   clearInterval(heroAttackTimer);
   clearInterval(enemyAttackTimer);
 }
+
+watchEffect(() => {
+  attackStatus.value === 1 ? start() : clear();
+});

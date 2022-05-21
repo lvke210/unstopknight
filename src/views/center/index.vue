@@ -1,4 +1,5 @@
 <template>
+  <div class="stage-info">关卡:{{ stage }} 剩余怪物:{{ stageProgress }}</div>
   <div class="enemy" @click="touchEnemyAttack"><Progress title="敌方" color="red" /></div>
   <div class="hero"><Progress title="生命" color="red" /></div>
   <canvas ref="canvas" class="canvas" width="300" height="600"></canvas>
@@ -14,11 +15,17 @@ import Progress from "@/components/progress.vue";
 import Modal from "@/components/modal.vue";
 import { useStore } from "vuex";
 import { start, clear } from "../../utils";
-import { heroAttack, heroUpgrade } from "../../utils/game";
+import { heroAttack, heroUpgrade, attackStatusUpdate } from "../../utils/game";
 import { drawingStart } from "../../utils/canvas.js";
 
 const store = useStore();
 const canvas = ref(null);
+const stage = computed(() => {
+  return store.state.system.stage;
+});
+const stageProgress = computed(() => {
+  return store.state.system.stageCur;
+});
 
 onMounted(() => {
   drawingStart(canvas);
@@ -42,7 +49,7 @@ function closeModal() {
   store.dispatch("systemChange", {
     deadVisible: false,
   });
-  start();
+  attackStatusUpdate(0);
 }
 function touchEnemyAttack() {
   heroAttack();
@@ -80,5 +87,14 @@ button {
   bottom: 0;
   width: 100%;
   border: 1px solid red;
+}
+.stage-info {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 1rem;
+  width: 100%;
+  text-align: center;
+  margin-top: 1rem;
 }
 </style>
