@@ -1,5 +1,5 @@
 import store from "../store";
-import { attackStatusUpdate, attackStatus, updateEnemy } from "./game";
+import { attackStatusUpdate, attackStatus, updateEnemy, getHeroAttackResult } from "./game";
 const slm = new Image();
 slm.src = require("../assets/slm.png");
 const sword = new Image();
@@ -7,7 +7,7 @@ sword.src = require("../assets/att.png");
 const tinyHero = new Image();
 tinyHero.src = require("../assets/hero.png");
 let drawingTimer;
-
+let ctx2 = null;
 // 怪物的位置 用于判定战斗状态: 入场和离场,position_x 到达一定数值改变战斗状态
 let position_x = -200;
 
@@ -16,6 +16,7 @@ let position_x = -200;
  */
 export function drawingStart(el) {
   const ctx = el.value.getContext("2d");
+  ctx2 = ctx;
   let x = 0;
 
   drawingTimer = setInterval(() => {
@@ -42,6 +43,7 @@ export function drawingStop() {
   clearInterval(drawingTimer);
 }
 
+// 英雄持剑
 function drawHero(ctx) {
   ctx.drawImage(tinyHero, 45, 410, 150, 150);
 }
@@ -54,6 +56,7 @@ function drawSword(x, ctx) {
   ctx.restore();
 }
 
+//怪物duang duang duang
 function drawSlm(x, ctx) {
   switch (attackStatus.value) {
     case 0:
@@ -74,4 +77,24 @@ function drawSlm(x, ctx) {
       ctx.restore();
       break;
   }
+}
+
+//怪物受伤数字显示
+
+export function drawEnemyLoseBlood() {
+  let t = store.state.speed * 900;
+  let attackNum = getHeroAttackResult(1);
+  let timer = setInterval(() => {
+    if (t > 0) {
+      t -= 20;
+      ctx2.save();
+      ctx2.translate(25, 150 - (store.state.speed * 900 - t) / 20);
+      ctx2.fillStyle = "#fff";
+      ctx2.font = "50px serif";
+      ctx2.fillText(`-${attackNum}`, 0, 0);
+      ctx2.restore();
+    } else {
+      clearInterval(timer);
+    }
+  }, 20);
 }

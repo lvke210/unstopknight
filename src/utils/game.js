@@ -1,6 +1,7 @@
 import { clear } from "./index";
 import store from "../store";
 import { computed } from "vue";
+import { drawEnemyLoseBlood } from "./canvas";
 
 // 战斗状态
 export const attackStatus = computed(() => {
@@ -11,7 +12,7 @@ export const attackStatus = computed(() => {
  * 伤害计算 英雄对怪物
  * @type 存在时计算怪物对英雄
  */
-function getHeroAttackResult(type) {
+export function getHeroAttackResult(type) {
   if (type) {
     return store.state.attack > store.state.enemy.defence
       ? store.state.attack - store.state.enemy.defence
@@ -163,5 +164,4 @@ export function attackStatusUpdate(value) {
 function setlocalStorage() {
   const { state } = store;
   localStorage.setItem("state", JSON.stringify(state));
-  console.log(state);
 }

@@ -12,7 +12,7 @@ const state = local
       bloodMax: 1000,
       magicCur: 300, //蓝量
       magicMax: 1000,
-      speed: 0.3, //攻速
+      speed: 0.8, //攻速
       attack: 150, //攻击
       defence: 10, //防御
       sucking: 10, //吸血
