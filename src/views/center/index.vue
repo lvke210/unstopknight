@@ -3,10 +3,11 @@
   <div class="enemy" @click="touchEnemyAttack"><Progress title="敌方" color="red" /></div>
   <div class="hero"><Progress title="生命" color="red" /></div>
   <canvas ref="canvas" class="canvas" width="300" height="600"></canvas>
+  <canvas ref="canvas" class="canvas" id="canvas2" width="300" height="600"></canvas>
   <div class="hero-skill">
     <button @click="upgrade" class="btn">升级</button>
     <button class="btn" @click="nextEnemy">继续</button>
-    <button class="btn" @click="stopAttacking">暂停</button>
+    <button class="btn" @click="stopAttack">停止</button>
   </div>
   <Modal :cancel="closeModal" :visible="visible">你被怪物送到了一个地方</Modal>
 </template>
@@ -62,7 +63,7 @@ function upgrade() {
 function nextEnemy() {
   start();
 }
-function stopAttacking() {
+function stopAttack() {
   clear();
 }
 </script>

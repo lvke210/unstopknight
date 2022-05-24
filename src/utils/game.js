@@ -18,6 +18,8 @@ export function clear() {
   clearInterval(heroAttackTimer);
   clearInterval(enemyAttackTimer);
 }
+import { drawEnemyLoseBlood } from "./canvas";
+
 // 战斗状态
 export const attackStatus = computed(() => {
   return store.state.system.attackStatus;
@@ -30,7 +32,7 @@ watchEffect(() => {
  * 伤害计算 英雄对怪物
  * @type 存在时计算怪物对英雄
  */
-function getHeroAttackResult(type) {
+export function getHeroAttackResult(type) {
   if (type) {
     return store.state.attack > store.state.enemy.defence
       ? store.state.attack - store.state.enemy.defence
