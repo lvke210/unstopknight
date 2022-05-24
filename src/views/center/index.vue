@@ -28,6 +28,10 @@ const stageProgress = computed(() => {
   return store.state.system.stageCur;
 });
 
+const attackStatus = computed(() => {
+  return store.state.system.attackStatus;
+});
+
 onMounted(() => {
   drawingStart(canvas);
 });
@@ -53,7 +57,9 @@ function closeModal() {
   attackStatusUpdate(0);
 }
 function touchEnemyAttack() {
-  heroAttack();
+  if (attackStatus.value === 1) {
+    heroAttack();
+  }
 }
 
 function upgrade() {
