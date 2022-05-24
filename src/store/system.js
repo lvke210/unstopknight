@@ -6,7 +6,9 @@ const state = local
       stageCur: 10, // 关卡进度 剩余0 时过关
       stageMax: 10, // 过关所需进度   打一个怪进度 +1,满10个 过一关
       deadVisible: false, //死亡弹窗
+      offlilneProfitVisible: false, //离线弹窗
       attackStatus: 0, // 0:战斗前,1:战斗中 2:战斗后
+      lastActiveTime: new Date().getTime(), // 最后活跃时间，用于计算离线时长
     };
 export default {
   state,

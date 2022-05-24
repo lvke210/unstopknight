@@ -1,6 +1,6 @@
 const local = JSON.parse(localStorage.getItem("state"));
-delete local.enemy;
-delete local.system;
+local ? delete local.enemy : null;
+local ? delete local.system : null;
 const state = local
   ? local
   : {

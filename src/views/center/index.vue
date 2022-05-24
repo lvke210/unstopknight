@@ -6,6 +6,7 @@
   <div class="hero-skill">
     <button @click="upgrade" class="btn">升级</button>
     <button class="btn" @click="nextEnemy">继续</button>
+    <button class="btn" @click="stopAttacking">暂停</button>
   </div>
   <Modal :cancel="closeModal" :visible="visible">你被怪物送到了一个地方</Modal>
 </template>
@@ -14,8 +15,7 @@ import { onBeforeUnmount, computed, ref, onMounted } from "vue";
 import Progress from "@/components/progress.vue";
 import Modal from "@/components/modal.vue";
 import { useStore } from "vuex";
-import { start, clear } from "../../utils";
-import { heroAttack, heroUpgrade, attackStatusUpdate } from "../../utils/game";
+import { heroAttack, heroUpgrade, attackStatusUpdate, start, clear } from "../../utils/game";
 import { drawingStart } from "../../utils/canvas.js";
 
 const store = useStore();
@@ -61,6 +61,9 @@ function upgrade() {
 }
 function nextEnemy() {
   start();
+}
+function stopAttacking() {
+  clear();
 }
 </script>
 

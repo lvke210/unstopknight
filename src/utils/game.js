@@ -1,10 +1,29 @@
-import { clear } from "./index";
 import store from "../store";
 import { computed } from "vue";
-
+import { watchEffect } from "vue";
+let recoveryTimer, heroAttackTimer, enemyAttackTimer;
+/**
+ * 开始执行怪物攻击喝英雄攻击的定时器
+ */
+export function start() {
+  // recoveryTimer = recovery();
+  heroAttackTimer = heroAttackInterval();
+  enemyAttackTimer = enemyAttackInterval();
+}
+/**
+ * 清除所有定时器
+ * */
+export function clear() {
+  // clearInterval(recoveryTimer);
+  clearInterval(heroAttackTimer);
+  clearInterval(enemyAttackTimer);
+}
 // 战斗状态
 export const attackStatus = computed(() => {
   return store.state.system.attackStatus;
+});
+watchEffect(() => {
+  attackStatus.value === 1 ? start() : clear();
 });
 
 /**
@@ -63,15 +82,15 @@ export function heroAttack() {
     : null;
   // bloodCur为0代表怪物死亡,立即执行死亡之后的操作,
   if (!bloodCur) {
-    //停止战斗
-    clear();
-    attackStatusUpdate(2);
+    clear(); //停止战斗（清除定时器）
+    attackStatusUpdate(2); // 更改战斗状态
 
     // 更新关卡信息
     const isStageUpgrade = store.state.system.stageCur === 0;
     store.dispatch("systemChange", {
       stageCur: isStageUpgrade ? store.state.system.stageMax : store.state.system.stageCur - 1,
       stage: isStageUpgrade ? store.state.system.stage + 1 : store.state.system.stage,
+      lastActiveTime: new Date().getTime(),
     });
 
     // 怪物死亡 英雄升级或者累积经验
@@ -163,5 +182,30 @@ export function attackStatusUpdate(value) {
 function setlocalStorage() {
   const { state } = store;
   localStorage.setItem("state", JSON.stringify(state));
-  console.log(state);
+}
+
+/**
+ *  获取离线时间
+ */
+
+export function getTimeDiff() {
+  const oldTime = store.state.system.lastActiveTime;
+  const nowTime = new Date().getTime(); // 现在的时间
+  const cha = nowTime - oldTime; // 时间戳的差值
+  // const day = Math.floor(cha / 1000 / 60 / 60 / 24);
+  // const hour = Math.floor((cha / 1000 / 60 / 60) % 24);
+  // const fen = Math.floor((cha / 1000 / 60) % 60);
+  const sec = Math.floor((cha / 1000) % 60);
+  return sec;
+}
+console.log(getTimeDiff(), "getTimeDiff");
+
+/**
+ * 触发离线收益
+ */
+export function getOfflineProfit() {
+  const offlineTime = getTimeDiff();
+  if (offlineTime < 600) {
+    return;
+  }
 }
